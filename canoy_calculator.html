@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: hsl(0, 0%, 95%);
+}
+
+#calculator {
+    font-family: Arial, sans-serif;
+    background-color: hsl(0, 0%, 15%);
+    border-radius: 15px;
+    max-width: 400px; 
+    width: 90%; 
+    overflow: hidden;
+}
+
+#display {
+    width: 100%;
+    padding: 15px;
+    font-size: 4rem;
+    text-align: left;
+    border: none;
+    background-color: hsl(0, 0%, 20%);
+    color: white;
+}
+
+#keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 20px;
+}
+
+button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    background-color: hsl(0, 0%, 30%);
+    color: white;
+    font-size: 2.5rem; 
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: hsl(0, 0%, 40%);
+}
+
+button:active {
+    background-color: hsl(0, 0%, 50%);
+}
+
+.operator-btn {
+    background-color: hsl(0, 0%, 30%);
+    color: #76CD26;
+}
+
+.operator-btn:hover {
+    background-color: hsl(0, 0%, 40%);
+}
+
+.operator-btn:active {
+    background-color: hsl(0, 0%, 50%);
+}
+
+.operator-btn2 {
+    background-color: hsl(0, 0%, 30%);
+    color: #FF5349;
+}
+
+.operator-btn2:hover {
+    background-color: hsl(0, 0%, 40%);
+}
+
+.operator-btn2:active {
+    background-color: hsl(0, 0%, 50%);
+}
+
+.operator-btn3 {
+    background-color: #76CD26;
+    color: #fff;
+}
+
+.operator-btn3:hover {
+    background-color: #8eda47;
+}
+
+.operator-btn3:active {
+    background-color: #a8e76d;
+}
+</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Calculator</title>
+</head>
+<body>
+    
+    <div id="calculator">
+        <input id="display" readonly>
+        <div id="keys">
+            <button onclick="clearDisplay('C')" class="operator-btn2">C</button>
+            <button onclick="toggleParentheses()" class="operator-btn">( )</button>
+            <button onclick="calculatePercentage('%')" class="operator-btn">%</button>
+            <button onclick="appendToDisplay('÷')" class="operator-btn">÷</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('x')" class="operator-btn">x</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+            <button onclick="changeSign('+/-')">+/-</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="calculate('=')" class="operator-btn3">=</button>
+        </div>
+    </div>
+    
+    <script>
+const display = document.getElementById("display");
+
+function handleKeyboardInput(event) {
+    const key = event.key;
+    const operators = ['+', '-', '*', '/'];
+
+    if (!isNaN(key) || operators.includes(key) || key === 'x' || key === '÷' || key === '(' || key === ')') {
+        appendToDisplay(key);
+    } else if (key === 'Enter') {
+        calculate();
+    } else if (key === 'Backspace') {
+        deleteLastCharacter();
+    } else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+    }
+}
+
+document.addEventListener('keydown', handleKeyboardInput);
+
+function appendToDisplay(input) {
+    const lastChar = display.value[display.value.length - 1];
+    const operators = ['+', '-', 'x', '÷'];
+
+    if (operators.includes(input) && operators.includes(lastChar)) {
+        return;
+    }
+
+    display.value += input;
+}
+
+function toggleParentheses() {
+    const lastChar = display.value[display.value.length - 1];
+    const openCount = (display.value.match(/\(/g) || []).length;
+    const closeCount = (display.value.match(/\)/g) || []).length;
+
+    if (lastChar === '(') {
+        appendToDisplay(')'); 
+    } 
+
+    else if (openCount > closeCount) {
+        appendToDisplay(')');
+    } 
+    
+    else {
+        appendToDisplay('(');
+    }
+}
+
+function clearDisplay() {
+    display.value = "";
+}
+
+function calculate() {
+    try {
+        const inputValue = display.value.replace(/x/g, '*').replace(/÷/g, '/');
+        const result = eval(inputValue);
+        if (isNaN(result) || result === undefined) {
+            display.value = "";
+        } else {
+            display.value = result;
+        }
+    } catch (error) {
+        display.value = "Error";
+    }
+}
+
+function deleteLastCharacter() {
+    display.value = display.value.slice(0, -1);
+}
+
+function calculatePercentage() {
+    const inputValue = parseFloat(display.value);
+    if (isNaN(inputValue)) {
+        display.value = "";
+    } else {
+        display.value = inputValue / 100;
+    }
+}
+
+function changeSign() {
+    const inputValue = parseFloat(display.value);
+    if (isNaN(inputValue)) {
+        display.value = "";
+    } else {
+        display.value = inputValue * -1;
+    }
+}
+</script>
+</body>
+</html>

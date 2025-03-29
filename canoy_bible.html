@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Verse Finder</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-image: url(https://slidechef.net/wp-content/uploads/2024/02/Cross-Background.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(248, 249, 250, 0.8); /* Transparent navbar */
+    padding: 10px 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.navbar-right {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-right a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+
+.navbar-right a:hover {
+    color: #007bff;
+}
+
+/* Bible Verse Finder Section */
+h1 {
+    font-size: 40px;
+    margin-top: 130px;
+    color: #fff;
+}
+
+p {
+    color: #fff;
+    font-size: 20px;
+}
+
+.input-container, .output-container {
+    margin-top: 20px;
+}
+
+#feeling {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+label {
+    color: #fff;
+    font-size: 20px;
+}
+
+#find-verse {
+    font-size: 15px;
+    padding: 10px 20px;
+    background-color: #008000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#find-verse:hover {
+    background-color: #006400; /* Darker green on hover */
+}
+
+#verse-output {
+    font-style: italic;
+    margin-top: 12px;
+    color: #fff;
+    font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+    <!-- Header and Navigation Bar -->
+    <header>
+        <div class="navbar">
+            <div class="logo">Bible Verse Finder</div>
+            <div class="navbar-right">
+                <a href="#">Discover</a>
+                <a href="#">Feature Content</a>
+                <a href="#">About Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Bible Verse Finder Section -->
+    <div class="container">
+        <h1>Bible Verse Finder</h1>
+        <p>Tell us how you feel and we'll find a relevant verse for you.</p>
+        
+        <div class="input-container">
+            <label for="feeling">Your Feeling:</label>
+            <select id="feeling">
+                <option value="">Select an emotion</option>
+                <option value="happy">Happy</option>
+                <option value="sad">Sad</option>
+                <option value="angry">Angry</option>
+                <option value="lonely">Lonely</option>
+                <option value="guilty">Guilty</option>
+                <option value="jealous">Jealous</option>
+                <option value="overwhelmed">Overwhelmed</option>
+            </select>
+            
+            <button id="find-verse">Find Verse</button>
+        </div>
+        
+        <div class="output-container">
+            <p id="verse-output"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle verse finding -->
+    <script>
+        const feelingSelect = document.getElementById("feeling");
+        const findVerseButton = document.getElementById("find-verse");
+        const verseOutput = document.getElementById("verse-output");
+        
+        const bibleVerse = {
+            "happy": "Psalm 100:1<br><span>Make a joyful noise to the Lord, all the earth!</span><br><span><br>Romans 12:12<br><span> Rejoice in hope, be patient in tribulation, be constant in prayer.<br><span><br>Psalm 37:4<br><span> Delight yourself in the Lord, and he will give you the desires of your heart.<br><span><br>Ecclesiastes 3:12<br><span> I perceived that there is nothing better for them than to be joyful and to do good as long as they live;",
+            "sad": "Psalm 34:18<br><span>The Lord is near to the broken hearted and saves the rushed in spirit.</span>",
+            "angry": "Proverbs 14:17<br><span>A man quick temper acts foolishly, and a man of evil devices is hated.</span>",
+            "lonely": "Hebrews 13:5<br><span> Never will I leave you; never will I forsake you.</span>",
+            "guilty": "1 John 1:9<br><span> If we confess our sins, he is faithful and just and will forgive us our sins and purify us from all unrighteousness.</span>",
+            "jealous": "Proverbs 14:30<br><span> A heart at peace gives life to the body, but envy rots the bones.</span>",
+            "overwhelmed": "Matthew 11:28<br><span> Come to me, all you who are weary and burdened, and I will give you rest.</span>",
+        };
+            
+        findVerseButton.addEventListener("click", () => {
+            const feeling = feelingSelect.value;
+            let matchingVerse = bibleVerse[feeling];
+            
+            if (matchingVerse) {
+                verseOutput.innerHTML = matchingVerse;
+            } else {
+                verseOutput.textContent = "No matching verse found.";
+            }
+        });
+    </script>
+
+</body>
+</html>
